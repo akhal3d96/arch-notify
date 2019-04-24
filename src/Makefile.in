@@ -23,7 +23,7 @@ man_MANS = archup.1
 all: archup-bin archup-man
 
 archup-bin: archup.c
-	$(CC) $(CFLAGS) -DVERSION=\"$(VERSION)\" `pkg-config --cflags --libs gtk+-2.0` archup.c -o archup $(LIBS)
+	$(CC) $(CFLAGS) -DVERSION=\"$(VERSION)\" `pkg-config --cflags --libs libnotify` archup.c -o archup $(LIBS)
 
 archup-man: archup.1
 	gzip archup.1

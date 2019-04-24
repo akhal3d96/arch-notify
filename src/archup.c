@@ -159,7 +159,7 @@ int main(int argc, char **argv)
         GError *error = NULL;
 
         /* Those are needed for the output. */
-	char *output_string=malloc(23); 
+	char *output_string=malloc(24); 
 	sprintf(output_string,"There are updates for:\n");
 	bool got_updates = FALSE;
 
@@ -192,8 +192,8 @@ int main(int argc, char **argv)
 		/* We allocate that much more memory+2 bytes for the "- "+1 byte as delimiter. */
 		output_string = (char *)realloc(output_string,strlen(output_string)+1+llen+2);
 		/* We add the line to the output string. */
-		strncat(output_string,"- ",2);
-		strncat(output_string,line,llen);
+		strcat(output_string,"- ");
+		strcat(output_string,line);
 	}
 
 	/* We close the popen stream if we don't need it anymore. */
@@ -210,7 +210,7 @@ int main(int argc, char **argv)
 			output_string[strlen(output_string)-1] = '\0';
 		}
 		/* Constructs the notification. */
-		my_notify = notify_notification_new("New updates for Archlinux available!",output_string,icon,NULL);
+		my_notify = notify_notification_new("New updates for Archlinux available!",output_string,icon);
 		/* Sets the timeout until the notification disappears. */
 		notify_notification_set_timeout(my_notify,timeout);
 		/* We set the category.*/
@@ -221,9 +221,10 @@ int main(int argc, char **argv)
 		notify_notification_show(my_notify,&error);
 		/* and deinitialize the libnotify afterwards. */
 		notify_uninit();
-		/* Should be safe now */
-		free(output_string);
 	}
+	
+	/* Should be safe now */
+	free(output_string);
 
 	return(0);
 }
